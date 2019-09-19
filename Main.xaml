@@ -50,6 +50,7 @@
     <Flowchart.Variables>
       <Variable x:TypeArguments="ui:GenericValue" Name="InputName" />
       <Variable x:TypeArguments="ui:GenericValue" Name="InputGmailID" />
+      <Variable x:TypeArguments="x:String" Name="DesktopPath1" />
     </Flowchart.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -60,33 +61,37 @@
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
     <Flowchart.StartNode>
-      <x:Reference>__ReferenceID1</x:Reference>
+      <x:Reference>__ReferenceID0</x:Reference>
     </Flowchart.StartNode>
-    <FlowStep x:Name="__ReferenceID1">
+    <FlowStep x:Name="__ReferenceID0">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <av:Point x:Key="ShapeLocation">190,125.6</av:Point>
-          <av:Size x:Key="ShapeSize">200,68</av:Size>
-          <av:PointCollection x:Key="ConnectorLocation">290,193.6 290,236</av:PointCollection>
+          <av:Size x:Key="ShapeSize">200,66</av:Size>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
-      <Sequence DisplayName="1.Startup Logging" sap:VirtualizedContainerService.HintSize="1765,2681" sap2010:WorkflowViewState.IdRef="Sequence_1">
+      <Sequence DisplayName="1.Startup Logging" sap:VirtualizedContainerService.HintSize="1413,3361" sap2010:WorkflowViewState.IdRef="Sequence_1">
         <Sequence.Variables>
           <Variable x:TypeArguments="x:Boolean" Name="PathFileExist" />
-          <Variable x:TypeArguments="x:String" Name="DesktopPath1" />
           <Variable x:TypeArguments="x:String" Name="DesktopPath2" />
           <Variable x:TypeArguments="x:String" Name="DesktopPath3" />
           <Variable x:TypeArguments="x:String" Default="[System.DateTime.Now.ToString(“yyyy/MM/dd”)]" Name="FolderDate" />
           <Variable x:TypeArguments="x:Boolean" Name="PathFolderExist" />
           <Variable x:TypeArguments="x:String" Name="DesktopUiPath" />
           <Variable x:TypeArguments="x:Boolean" Name="UiPathFolderExist" />
+          <Variable x:TypeArguments="x:String" Default="[DesktopPath2 + System.DateTime.Now.ToString(“yyyy”) +&quot;\&quot;]" Name="FolderMonthDirectory" />
         </Sequence.Variables>
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
-        <ui:InputDialog Options="{x:Null}" DisplayName="Input Dialog" sap:VirtualizedContainerService.HintSize="1723,92" sap2010:WorkflowViewState.IdRef="InputDialog_1" IsPassword="False" Label="What is your Gmail email address?" Title="Your Gmail">
+        <ui:RemoveLogFields DisplayName="Remove Log Fields" sap:VirtualizedContainerService.HintSize="1371,22" sap2010:WorkflowViewState.IdRef="RemoveLogFields_1">
+          <ui:RemoveLogFields.Fields>
+            <scg:List x:TypeArguments="InArgument(x:String)" Capacity="0" />
+          </ui:RemoveLogFields.Fields>
+        </ui:RemoveLogFields>
+        <ui:InputDialog Options="{x:Null}" DisplayName="Input Dialog" sap:VirtualizedContainerService.HintSize="1371,92" sap2010:WorkflowViewState.IdRef="InputDialog_1" IsPassword="False" Label="What is your Gmail email address?" Title="Your Gmail">
           <ui:InputDialog.Result>
             <OutArgument x:TypeArguments="ui:GenericValue">[InputGmailID]</OutArgument>
           </ui:InputDialog.Result>
@@ -96,7 +101,7 @@
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
         </ui:InputDialog>
-        <ui:InputDialog Options="{x:Null}" DisplayName="Input Dialog" sap:VirtualizedContainerService.HintSize="1723,92" sap2010:WorkflowViewState.IdRef="InputDialog_2" IsPassword="False" Label="What is your Name?" Title="Your Name">
+        <ui:InputDialog Options="{x:Null}" DisplayName="Input Dialog" sap:VirtualizedContainerService.HintSize="1371,92" sap2010:WorkflowViewState.IdRef="InputDialog_2" IsPassword="False" Label="What is your Name?" Title="Your Name">
           <ui:InputDialog.Result>
             <OutArgument x:TypeArguments="ui:GenericValue">[InputName]</OutArgument>
           </ui:InputDialog.Result>
@@ -106,8 +111,8 @@
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
         </ui:InputDialog>
-        <ui:GetEnvironmentFolder DisplayName="Get Environment Folder" FolderPath="[DesktopPath1]" sap:VirtualizedContainerService.HintSize="1723,62" sap2010:WorkflowViewState.IdRef="GetEnvironmentFolder_1" SpecialFolder="Desktop" />
-        <Assign sap:VirtualizedContainerService.HintSize="1723,60" sap2010:WorkflowViewState.IdRef="Assign_3">
+        <ui:GetEnvironmentFolder DisplayName="Get Environment Folder" FolderPath="[DesktopPath1]" sap:VirtualizedContainerService.HintSize="1371,61" sap2010:WorkflowViewState.IdRef="GetEnvironmentFolder_1" SpecialFolder="Desktop" />
+        <Assign sap:VirtualizedContainerService.HintSize="1371,60" sap2010:WorkflowViewState.IdRef="Assign_3">
           <Assign.To>
             <OutArgument x:TypeArguments="x:String">[DesktopUiPath]</OutArgument>
           </Assign.To>
@@ -115,13 +120,13 @@
             <InArgument x:TypeArguments="x:String">[DesktopPath1 + "\UiPath"]</InArgument>
           </Assign.Value>
         </Assign>
-        <ui:PathExists DisplayName="Path Exists" Exists="[UiPathFolderExist]" sap:VirtualizedContainerService.HintSize="1723,90" sap2010:WorkflowViewState.IdRef="PathExists_3" Path="[DesktopUiPath]" PathType="Folder" />
-        <If Condition="[UiPathFolderExist]" sap:VirtualizedContainerService.HintSize="1723,210" sap2010:WorkflowViewState.IdRef="If_4">
+        <ui:PathExists DisplayName="Path Exists" Exists="[UiPathFolderExist]" sap:VirtualizedContainerService.HintSize="1371,89" sap2010:WorkflowViewState.IdRef="PathExists_3" Path="[DesktopUiPath]" PathType="Folder" />
+        <If Condition="[UiPathFolderExist]" sap:VirtualizedContainerService.HintSize="1371,208" sap2010:WorkflowViewState.IdRef="If_4">
           <If.Else>
             <ui:CreateDirectory ContinueOnError="{x:Null}" DisplayName="Create Directory" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="CreateDirectory_5" Path="[DesktopUiPath]" />
           </If.Else>
         </If>
-        <Assign sap:VirtualizedContainerService.HintSize="1723,60" sap2010:WorkflowViewState.IdRef="Assign_1">
+        <Assign sap:VirtualizedContainerService.HintSize="1371,60" sap2010:WorkflowViewState.IdRef="Assign_1">
           <Assign.To>
             <OutArgument x:TypeArguments="x:String">[DesktopPath2]</OutArgument>
           </Assign.To>
@@ -129,7 +134,7 @@
             <InArgument x:TypeArguments="x:String">[DesktopUiPath+"\Logs\"]</InArgument>
           </Assign.Value>
         </Assign>
-        <Assign sap:VirtualizedContainerService.HintSize="1723,60" sap2010:WorkflowViewState.IdRef="Assign_2">
+        <Assign sap:VirtualizedContainerService.HintSize="1371,60" sap2010:WorkflowViewState.IdRef="Assign_2">
           <Assign.To>
             <OutArgument x:TypeArguments="x:String">[DesktopPath3]</OutArgument>
           </Assign.To>
@@ -137,109 +142,195 @@
             <InArgument x:TypeArguments="x:String">[DesktopPath2+FolderDate]</InArgument>
           </Assign.Value>
         </Assign>
-        <ui:PathExists DisplayName="Path Exists" Exists="[PathFileExist]" sap:VirtualizedContainerService.HintSize="1723,90" sap2010:WorkflowViewState.IdRef="PathExists_1" Path="[DesktopPath2]" PathType="Folder" />
-        <ui:PathExists DisplayName="Path Exists" Exists="[PathFolderExist]" sap:VirtualizedContainerService.HintSize="1723,90" sap2010:WorkflowViewState.IdRef="PathExists_2" Path="[DesktopPath3]" PathType="Folder" />
-        <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="1723,93" sap2010:WorkflowViewState.IdRef="LogMessage_5" Level="Info" Message="[DesktopPath2 +&quot;        &quot;+ DesktopPath3]" />
-        <If Condition="[PathFileExist]" sap:VirtualizedContainerService.HintSize="1723,822" sap2010:WorkflowViewState.IdRef="If_1">
+        <ui:PathExists DisplayName="Path Exists" Exists="[PathFileExist]" sap:VirtualizedContainerService.HintSize="1371,89" sap2010:WorkflowViewState.IdRef="PathExists_1" Path="[DesktopPath2]" PathType="Folder" />
+        <ui:PathExists DisplayName="Path Exists" Exists="[PathFolderExist]" sap:VirtualizedContainerService.HintSize="1371,89" sap2010:WorkflowViewState.IdRef="PathExists_2" Path="[DesktopPath3]" PathType="Folder" />
+        <If Condition="[PathFileExist]" DisplayName="Daily Creation of logs's with/without for running process " sap:VirtualizedContainerService.HintSize="1371,949" sap2010:WorkflowViewState.IdRef="If_1">
           <If.Then>
-            <Sequence sap:VirtualizedContainerService.HintSize="839,610" sap2010:WorkflowViewState.IdRef="Sequence_3">
+            <Sequence sap:VirtualizedContainerService.HintSize="663,739" sap2010:WorkflowViewState.IdRef="Sequence_3">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
                   <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                 </scg:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
-              <If Condition="[PathFolderExist]" sap:VirtualizedContainerService.HintSize="797,518" sap2010:WorkflowViewState.IdRef="If_2">
+              <If Condition="[PathFolderExist]" sap:VirtualizedContainerService.HintSize="621,393" sap2010:WorkflowViewState.IdRef="If_2">
                 <If.Then>
-                  <Sequence sap:VirtualizedContainerService.HintSize="376,306" sap2010:WorkflowViewState.IdRef="Sequence_6">
+                  <Sequence sap:VirtualizedContainerService.HintSize="200,83" sap2010:WorkflowViewState.IdRef="Sequence_6">
                     <sap:WorkflowViewStateService.ViewState>
                       <scg:Dictionary x:TypeArguments="x:String, x:Object">
                         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                       </scg:Dictionary>
                     </sap:WorkflowViewStateService.ViewState>
-                    <ui:AppendLine DisplayName="Append Line" FileName="[DesktopPath3 +&quot;\&quot;+system.DateTime.Now.ToString(“dd.MM.yy”) + &quot;.txt&quot;]" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="AppendLine_8" Text="[system.DateTime.Now.ToString(“dd.MM.yy HH;mm;ss”) + &quot;: Application Started to Launch for -&quot; + InputName + &quot; , user email contact - &quot; + InputGmailID]" />
-                    <ui:AppendLine DisplayName="Append Line" FileName="[DesktopPath3 +&quot;\&quot;+system.DateTime.Now.ToString(“dd.MM.yy”) + &quot; Today Logs&quot; +&quot;.txt&quot;]" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="AppendLine_12" Text="[system.DateTime.Now.ToString(“dd.MM.yy HH;mm;ss”) + &quot;: Application Started to Launch for -&quot; + InputName + &quot; , user email contact - &quot; + InputGmailID]" />
                   </Sequence>
                 </If.Then>
                 <If.Else>
-                  <Sequence sap:VirtualizedContainerService.HintSize="376,368" sap2010:WorkflowViewState.IdRef="Sequence_4">
+                  <Sequence sap:VirtualizedContainerService.HintSize="376,245" sap2010:WorkflowViewState.IdRef="Sequence_4">
                     <sap:WorkflowViewStateService.ViewState>
                       <scg:Dictionary x:TypeArguments="x:String, x:Object">
                         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                       </scg:Dictionary>
                     </sap:WorkflowViewStateService.ViewState>
                     <ui:CreateDirectory ContinueOnError="{x:Null}" DisplayName="Create Directory" sap:VirtualizedContainerService.HintSize="334,22" sap2010:WorkflowViewState.IdRef="CreateDirectory_2" Path="[DesktopPath3]" />
-                    <ui:AppendLine DisplayName="Append Line" FileName="[DesktopPath3 +&quot;\&quot;+system.DateTime.Now.ToString(“dd.MM.yy”) + &quot; Today Logs&quot; +&quot;.txt&quot;]" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="AppendLine_13" Text="[system.DateTime.Now.ToString(“dd.MM.yy HH;mm;ss”) + &quot;: Application Started to Launch for -&quot; + InputName + &quot; , user email contact - &quot; + InputGmailID]" />
-                    <ui:AppendLine DisplayName="Append Line" FileName="[DesktopPath3 +&quot;\&quot;+system.DateTime.Now.ToString(“dd.MM.yy”) + &quot;.txt&quot;]" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="AppendLine_9" Text="[system.DateTime.Now.ToString(“dd.MM.yy HH;mm;ss”) + &quot;: Application Started to Launch for -&quot; + InputName + &quot; , user email contact - &quot; + InputGmailID]" />
+                    <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="334,91" sap2010:WorkflowViewState.IdRef="LogMessage_5" Level="Info" Message="[&quot;Directory is created in Desktop&quot;]" />
                   </Sequence>
                 </If.Else>
               </If>
+              <ui:AppendLine DisplayName="Today Logs" FileName="[DesktopPath3 +&quot;\&quot;+system.DateTime.Now.ToString(“dd.MM.yy”) + &quot; Today Logs&quot; +&quot;.txt&quot;]" sap:VirtualizedContainerService.HintSize="621,87" sap2010:WorkflowViewState.IdRef="AppendLine_13" Text="[system.DateTime.Now.ToString(“dd.MM.yy HH;mm;ss”) + &quot;: Application Started to Launch for -&quot; + InputName + &quot; , user email contact - &quot; + InputGmailID]" />
+              <ui:AppendLine DisplayName="Full Logs" FileName="[DesktopPath3 +&quot;\&quot;+system.DateTime.Now.ToString(“dd.MM.yy”) + &quot;.txt&quot;]" sap:VirtualizedContainerService.HintSize="621,87" sap2010:WorkflowViewState.IdRef="AppendLine_9" Text="[system.DateTime.Now.ToString(“dd.MM.yy HH;mm;ss”) + &quot;: Application Started to Launch for -&quot; + InputName + &quot; , user email contact - &quot; + InputGmailID]" />
             </Sequence>
           </If.Then>
           <If.Else>
-            <Sequence sap:VirtualizedContainerService.HintSize="839,672" sap2010:WorkflowViewState.IdRef="Sequence_2">
+            <Sequence sap:VirtualizedContainerService.HintSize="663,801" sap2010:WorkflowViewState.IdRef="Sequence_2">
               <Sequence.Variables>
                 <Variable x:TypeArguments="x:String" Name="DesktopPath" />
+                <Variable x:TypeArguments="x:String" Name="variable1" />
               </Sequence.Variables>
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
                   <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                 </scg:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
-              <ui:CreateDirectory ContinueOnError="{x:Null}" DisplayName="Create Directory" sap:VirtualizedContainerService.HintSize="797,22" sap2010:WorkflowViewState.IdRef="CreateDirectory_1" Path="[DesktopPath2]" />
-              <If Condition="[PathFolderExist]" sap:VirtualizedContainerService.HintSize="797,518" sap2010:WorkflowViewState.IdRef="If_3">
+              <ui:CreateDirectory ContinueOnError="{x:Null}" DisplayName="Create Directory" sap:VirtualizedContainerService.HintSize="621,22" sap2010:WorkflowViewState.IdRef="CreateDirectory_1" Path="[DesktopPath2]" />
+              <If Condition="[PathFolderExist]" sap:VirtualizedContainerService.HintSize="621,393" sap2010:WorkflowViewState.IdRef="If_3">
                 <If.Then>
-                  <Sequence sap:VirtualizedContainerService.HintSize="376,306" sap2010:WorkflowViewState.IdRef="Sequence_7">
+                  <Sequence sap:VirtualizedContainerService.HintSize="200,83" sap2010:WorkflowViewState.IdRef="Sequence_7">
                     <sap:WorkflowViewStateService.ViewState>
                       <scg:Dictionary x:TypeArguments="x:String, x:Object">
                         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                       </scg:Dictionary>
                     </sap:WorkflowViewStateService.ViewState>
-                    <ui:AppendLine DisplayName="Append Line" FileName="[DesktopPath3 +&quot;\&quot;+system.DateTime.Now.ToString(“dd.MM.yy”) + &quot; Today Logs&quot; +&quot;.txt&quot;]" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="AppendLine_10" Text="[system.DateTime.Now.ToString(“dd.MM.yy HH;mm;ss”) + &quot;: Application Started to Launch for -&quot; + InputName + &quot; , user email contact - &quot; + InputGmailID]" />
-                    <ui:AppendLine DisplayName="Append Line" FileName="[DesktopPath3 +&quot;\&quot;+system.DateTime.Now.ToString(“dd.MM.yy”) + &quot;.txt&quot;]" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="AppendLine_7" Text="[system.DateTime.Now.ToString(“dd.MM.yy HH;mm;ss”) + &quot;: Application Started to Launch for -&quot; + InputName + &quot; , user email contact - &quot; + InputGmailID]" />
                   </Sequence>
                 </If.Then>
                 <If.Else>
-                  <Sequence sap:VirtualizedContainerService.HintSize="376,368" sap2010:WorkflowViewState.IdRef="Sequence_5">
+                  <Sequence sap:VirtualizedContainerService.HintSize="376,245" sap2010:WorkflowViewState.IdRef="Sequence_5">
                     <sap:WorkflowViewStateService.ViewState>
                       <scg:Dictionary x:TypeArguments="x:String, x:Object">
                         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                       </scg:Dictionary>
                     </sap:WorkflowViewStateService.ViewState>
                     <ui:CreateDirectory ContinueOnError="{x:Null}" DisplayName="Create Directory" sap:VirtualizedContainerService.HintSize="334,22" sap2010:WorkflowViewState.IdRef="CreateDirectory_4" Path="[DesktopPath3]" />
-                    <ui:AppendLine DisplayName="Append Line" FileName="[DesktopPath3 +&quot;\&quot;+system.DateTime.Now.ToString(“dd.MM.yy”) + &quot; Today Logs&quot; +&quot;.txt&quot;]" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="AppendLine_14" Text="[system.DateTime.Now.ToString(“dd.MM.yy HH;mm;ss”) + &quot;: Application Started to Launch for -&quot; + InputName + &quot; , user email contact - &quot; + InputGmailID]" />
-                    <ui:AppendLine DisplayName="Append Line" FileName="[DesktopPath3 +&quot;\&quot;+system.DateTime.Now.ToString(“dd.MM.yy HH;mm;ss”) + &quot;.txt&quot;]" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="AppendLine_11" Text="[system.DateTime.Now.ToString(“dd.MM.yy HH;mm;ss”) + &quot;: Application Started to Launch for -&quot; + InputName + &quot; , user email contact - &quot; + InputGmailID]" />
+                    <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="334,91" sap2010:WorkflowViewState.IdRef="LogMessage_4" Level="Info" Message="[&quot;Directory is created in Desktop&quot;]" />
                   </Sequence>
                 </If.Else>
               </If>
+              <ui:AppendLine DisplayName="Today Logs" FileName="[DesktopPath3 +&quot;\&quot;+system.DateTime.Now.ToString(“dd.MM.yy”) + &quot; Today Logs&quot; +&quot;.txt&quot;]" sap:VirtualizedContainerService.HintSize="621,87" sap2010:WorkflowViewState.IdRef="AppendLine_14" Text="[system.DateTime.Now.ToString(“dd.MM.yy HH;mm;ss”) + &quot;: Application Started to Launch for -&quot; + InputName + &quot; , user email contact - &quot; + InputGmailID]" />
+              <ui:AppendLine DisplayName="Append Line" FileName="[DesktopPath3 +&quot;\&quot;+system.DateTime.Now.ToString(“dd.MM.yy HH;mm;ss”) + &quot;.txt&quot;]" sap:VirtualizedContainerService.HintSize="621,87" sap2010:WorkflowViewState.IdRef="AppendLine_11" Text="[system.DateTime.Now.ToString(“dd.MM.yy HH;mm;ss”) + &quot;: Application Started to Launch for -&quot; + InputName + &quot; , user email contact - &quot; + InputGmailID]" />
             </Sequence>
           </If.Else>
         </If>
-        <ui:RemoveLogFields DisplayName="Remove Log Fields" sap:VirtualizedContainerService.HintSize="1723,22" sap2010:WorkflowViewState.IdRef="RemoveLogFields_1">
-          <ui:RemoveLogFields.Fields>
-            <scg:List x:TypeArguments="InArgument(x:String)" Capacity="0" />
-          </ui:RemoveLogFields.Fields>
-        </ui:RemoveLogFields>
-        <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="1723,93" sap2010:WorkflowViewState.IdRef="LogMessage_4" Level="Info" Message="[&quot;Directory is created in Desktop&quot;]" />
-        <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="1723,93" sap2010:WorkflowViewState.IdRef="LogMessage_3" Level="Info" Message="[&quot;Log Sucessful as of &quot; + system.DateTime.Now.ToString(“dd.MM.yy HH;mm;ss”)]" />
-      </Sequence>
-      <FlowStep.Next>
-        <FlowStep x:Name="__ReferenceID0">
+        <Sequence DisplayName="Monthly Logging" sap:VirtualizedContainerService.HintSize="376,914" sap2010:WorkflowViewState.IdRef="Sequence_9">
+          <Sequence.Variables>
+            <Variable x:TypeArguments="ui:GenericValue" Name="MonthlyLoggingDIR" />
+            <Variable x:TypeArguments="ui:GenericValue" Default="[&quot;-----------------------------------------------------------------&quot;]" Name="LoggingInfo1" />
+            <Variable x:TypeArguments="x:String" Default="[&quot;Date: &quot; + system.DateTime.Now.ToString(“dd.MM.yy”)]" Name="LoggingInfo2" />
+            <Variable x:TypeArguments="x:String" Default="[&quot;Time: &quot; + system.DateTime.Now.ToString(“HH;mm;ss”)]" Name="LoggingInfo3" />
+            <Variable x:TypeArguments="x:String" Default="[&quot;Name: &quot;+ InputName]" Name="LoggingInfo4" />
+            <Variable x:TypeArguments="x:String" Default="[&quot;Email: &quot; + InputGmailID]" Name="LoggingInfo5" />
+            <Variable x:TypeArguments="x:String" Default="-----------------------------------------------------------------" Name="LoggingInfo6" />
+          </Sequence.Variables>
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
-              <av:Point x:Key="ShapeLocation">190,236</av:Point>
-              <av:Size x:Key="ShapeSize">200,68</av:Size>
+              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
-          <Sequence DisplayName="2.Configuration Init" sap:VirtualizedContainerService.HintSize="200,68" sap2010:WorkflowViewState.IdRef="Sequence_8">
-            <sap:WorkflowViewStateService.ViewState>
-              <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-              </scg:Dictionary>
-            </sap:WorkflowViewStateService.ViewState>
-          </Sequence>
-        </FlowStep>
-      </FlowStep.Next>
+          <Assign sap:VirtualizedContainerService.HintSize="334,60" sap2010:WorkflowViewState.IdRef="Assign_4">
+            <Assign.To>
+              <OutArgument x:TypeArguments="ui:GenericValue">[MonthlyLoggingDIR]</OutArgument>
+            </Assign.To>
+            <Assign.Value>
+              <InArgument x:TypeArguments="ui:GenericValue">[DesktopPath2+"\"+FolderMonthDirectory + "\"+"Month Logs" +".txt"]</InArgument>
+            </Assign.Value>
+          </Assign>
+          <ui:AppendLine DisplayName="Append Line" FileName="[MonthlyLoggingDIR]" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="AppendLine_15" Text="[LoggingInfo1]" />
+          <ui:AppendLine DisplayName="Append Line" FileName="[MonthlyLoggingDIR]" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="AppendLine_17" Text="[LoggingInfo2]" />
+          <ui:AppendLine DisplayName="Append Line" FileName="[MonthlyLoggingDIR]" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="AppendLine_18" Text="[LoggingInfo3]" />
+          <ui:AppendLine DisplayName="Append Line" FileName="[MonthlyLoggingDIR]" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="AppendLine_19" Text="[LoggingInfo4]" />
+          <ui:AppendLine DisplayName="Append Line" FileName="[MonthlyLoggingDIR]" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="AppendLine_20" Text="[LoggingInfo5]" />
+          <ui:AppendLine DisplayName="Append Line" FileName="[MonthlyLoggingDIR]" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="AppendLine_21" Text="[LoggingInfo6]" />
+        </Sequence>
+        <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="1371,91" sap2010:WorkflowViewState.IdRef="LogMessage_3" Level="Info" Message="[&quot;Log Sucessful as of &quot; + system.DateTime.Now.ToString(“dd.MM.yy HH;mm;ss”)]" />
+      </Sequence>
     </FlowStep>
-    <x:Reference>__ReferenceID0</x:Reference>
+    <FlowStep>
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <av:Point x:Key="ShapeLocation">190,236</av:Point>
+          <av:Size x:Key="ShapeSize">200,66</av:Size>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+      <Sequence DisplayName="2.Configuration Init" sap:VirtualizedContainerService.HintSize="200,66" sap2010:WorkflowViewState.IdRef="Sequence_8">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+        <ui:ExcelApplicationScope Password="{x:Null}" WorkbookPath="{x:Null}" DisplayName="Excel Application Scope" sap:VirtualizedContainerService.HintSize="434,267" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_1" Visible="False">
+          <ui:ExcelApplicationScope.Body>
+            <ActivityAction x:TypeArguments="ui:WorkbookApplication">
+              <ActivityAction.Argument>
+                <DelegateInArgument x:TypeArguments="ui:WorkbookApplication" Name="ExcelWorkbookScope" />
+              </ActivityAction.Argument>
+              <Sequence DisplayName="Do" sap:VirtualizedContainerService.HintSize="242,158" sap2010:WorkflowViewState.IdRef="Sequence_12">
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+                <Sequence DisplayName="Check RC81 from Config file" sap:VirtualizedContainerService.HintSize="200,66" sap2010:WorkflowViewState.IdRef="Sequence_11">
+                  <Sequence.Variables>
+                    <Variable x:TypeArguments="ui:GenericValue" Name="RC81" />
+                    <Variable x:TypeArguments="x:Boolean" Name="RC81Validation" />
+                  </Sequence.Variables>
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                      <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                      <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                    </scg:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
+                  <ui:ExcelReadCell Cell="A1" DisplayName="Read Cell" sap:VirtualizedContainerService.HintSize="755,59" sap2010:WorkflowViewState.IdRef="ExcelReadCell_1" SheetName="Sheet1">
+                    <ui:ExcelReadCell.Result>
+                      <OutArgument x:TypeArguments="ui:GenericValue">[RC81]</OutArgument>
+                    </ui:ExcelReadCell.Result>
+                    <sap:WorkflowViewStateService.ViewState>
+                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                      </scg:Dictionary>
+                    </sap:WorkflowViewStateService.ViewState>
+                  </ui:ExcelReadCell>
+                  <ui:PathExists DisplayName="Path Exists" Exists="[RC81Validation]" sap:VirtualizedContainerService.HintSize="755,89" sap2010:WorkflowViewState.IdRef="PathExists_4" Path="[RC81]" PathType="File" />
+                  <If Condition="[RC81Validation]" sap:VirtualizedContainerService.HintSize="755,427" sap2010:WorkflowViewState.IdRef="If_5">
+                    <If.Then>
+                      <ui:AppendLine FileName="{x:Null}" Text="{x:Null}" DisplayName="Append Line" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="AppendLine_16" />
+                    </If.Then>
+                    <If.Else>
+                      <Sequence sap:VirtualizedContainerService.HintSize="376,279" sap2010:WorkflowViewState.IdRef="Sequence_10">
+                        <Sequence.Variables>
+                          <Variable x:TypeArguments="x:String" Default="\RC81.bat" Name="RC81defaultfile" />
+                        </Sequence.Variables>
+                        <sap:WorkflowViewStateService.ViewState>
+                          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                          </scg:Dictionary>
+                        </sap:WorkflowViewStateService.ViewState>
+                        <Assign sap:VirtualizedContainerService.HintSize="334,60" sap2010:WorkflowViewState.IdRef="Assign_5">
+                          <Assign.To>
+                            <OutArgument x:TypeArguments="ui:GenericValue">[RC81]</OutArgument>
+                          </Assign.To>
+                          <Assign.Value>
+                            <InArgument x:TypeArguments="ui:GenericValue">[DesktopPath1 + RC81defaultfile]</InArgument>
+                          </Assign.Value>
+                        </Assign>
+                        <ui:ExcelWriteCell Text="{x:Null}" Cell="A1" DisplayName="Write Cell" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="ExcelWriteCell_1" SheetName="Sheet1" />
+                      </Sequence>
+                    </If.Else>
+                  </If>
+                  <ui:PathExists DisplayName="Path Exists" Exists="[RC81Validation]" sap:VirtualizedContainerService.HintSize="755,89" sap2010:WorkflowViewState.IdRef="PathExists_5" Path="[RC81]" PathType="File" />
+                </Sequence>
+              </Sequence>
+            </ActivityAction>
+          </ui:ExcelApplicationScope.Body>
+        </ui:ExcelApplicationScope>
+      </Sequence>
+    </FlowStep>
   </Flowchart>
 </Activity>
